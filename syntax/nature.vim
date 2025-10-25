@@ -2,14 +2,14 @@ if exists("b:current_syntax")
     finish
 endif
 
-syn keyword natureKeyword as
 syn keyword natureKeyword new
-"syn keyword natureSuper   private super
+syn keyword natureKeyword as in
 syn keyword natureKeyword type fn
 syn keyword natureKeyword var let const
-syn keyword natureKeyword interface tuple
-syn keyword natureKeyword enum 
+syn keyword natureKeyword interface tuple enum union
 syn keyword natureInclude import export include
+syn keyword natureException throw catch
+"syn keyword natureSuper   private
 
 syn keyword natureLabel case match switch
 syn keyword natureRepeat for while loop
