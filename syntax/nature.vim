@@ -28,6 +28,7 @@ syn match Operator       '[\+\-\%=\/\^\&\*!?><\$|]'
 syn match SpecialComment '[`:\.#]'
 syn match Constant       '[{}\[\]()]'
 syn match natureType     '\v(\.@1<!|\.\.)\zs<([iu][0-9]{1,3})?>' display
+syn match natureType     '\w\+_t\([^a-zA-Z0-9_]\|$\)\@='
 hi def natureSymbol ctermfg=DarkGray guifg=DarkGray
 
 hi def link natureFunc Function
@@ -47,10 +48,10 @@ syn match natureFunc    "[0-9a-zA-Z_@]*\w\w*\(\(<.*>\s*\)*\(\[.*\]\)*\s*(\)\@="
 
 syn match  natureSpecialCharError display contained +\\\([^0-7nrt\\'"]\|[xX]\x\{2}\)+
 syn match  natureSpecialChar      contained "\\\([\"\\'ntr]\|[xX]\x\{2}\)"
-syn region natureString           start=+"+ end=+"+ end=+$+ contains=natureSpecialChar,natureSpecialCharError,@Spell
 syn match  natureCharacter        "'[^']*'" contains=natureSpecialChar,natureSpecialCharError
 syn match  natureCharacter        "'\\''" contains=natureSpecialChar
 syn match  natureCharacter        "'[^\\]'"
+syn region natureString           start=+["']+ end=+["']+ end=+$+ contains=natureSpecialChar,natureSpecialCharError,@Spell
 
 syn match natureNumber "\v<0[xX][0-9a-fA-F_]+([iuIU]?[lL]?[0-9]{-,3})?>"
 syn match natureNumber "\v<0[bB][01_]+([iuIU]?[lL]?[0-9]{-,3})?>"
