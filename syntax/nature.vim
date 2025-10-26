@@ -3,24 +3,26 @@ if exists("b:current_syntax")
 endif
 
 syn keyword natureKeyword new
-syn keyword natureKeyword as in
 syn keyword natureKeyword type fn
-syn keyword natureKeyword var let const
-syn keyword natureKeyword interface tuple enum union
+syn keyword natureKeyword as in is
+syn keyword natureKeyword var const
+syn keyword natureKeyword interface enum union
 syn keyword natureInclude import export include
 syn keyword natureException throw catch
 "syn keyword natureSuper   private
 
-syn keyword natureLabel case match switch
+"syn keyword natureLabel case 
 syn keyword natureRepeat for while loop
 syn keyword natureStatement break continue return
-syn keyword natureConditional if else
+syn keyword natureConditional if else match
 
-syn keyword natureType bool void string anyptr ptr
-syn keyword natureType float f32 f64
+syn keyword natureType bool void string anyptr any ptr rawptr
 syn keyword natureType i8 i16 i32 i64 u8 u16 u32 u64 int uint
-syn keyword natureCharacter true null false nil
+syn keyword natureType float f32 f64
 syn keyword natureThis self
+syn keyword ModeMsg null
+syn keyword Added true 
+syn keyword Title false
 
 syn match PreProc        '[@]'
 syn match natureSymbol   '[,;]'
@@ -28,7 +30,8 @@ syn match Operator       '[\+\-\%=\/\^\&\*!?><\$|]'
 syn match SpecialComment '[`:\.#]'
 syn match Constant       '[{}\[\]()]'
 syn match natureType     '\v(\.@1<!|\.\.)\zs<([iu][0-9]{1,3})?>' display
-syn match natureType     '\w\+_t\([^a-zA-Z0-9_]\|$\)\@='
+syn match natureType     '\w\+_t\(\W\|$\)\@='
+syn match natureTypedef  '\s\w\+\(\.\w\+.*(.*).*{\s*\(.*}\)\?$\)\@='
 hi def natureSymbol ctermfg=DarkGray guifg=DarkGray
 
 hi def link natureFunc Function
@@ -43,7 +46,7 @@ syn match natureType '\(:\s*\)\@<=\w\w*\(\(\(\(\[.*\]\)\|\({.*}\)\|\(\w\+\)\|\(\
 
 syn match natureType    "\v\w+\ze\<.*\>" "foo<T>();
 "syn match natureType    "\w\(\w\)*<"he=e-1,me=e-1 " foo<T>();
-syn match natureType    "\(->\s*\)\@<=\w\(\w\)*"
+"syn match natureType    "\(->\s*\)\@<=\w\(\w\)*"
 syn match natureFunc    "[0-9a-zA-Z_@]*\w\w*\(\(<.*>\s*\)*\(\[.*\]\)*\s*(\)\@="
 
 syn match  natureSpecialCharError display contained +\\\([^0-7nrt\\'"]\|[xX]\x\{2}\)+
@@ -51,7 +54,7 @@ syn match  natureSpecialChar      contained "\\\([\"\\'ntr]\|[xX]\x\{2}\)"
 syn match  natureCharacter        "'[^']*'" contains=natureSpecialChar,natureSpecialCharError
 syn match  natureCharacter        "'\\''" contains=natureSpecialChar
 syn match  natureCharacter        "'[^\\]'"
-syn region natureString           start=+["']+ end=+["']+ end=+$+ contains=natureSpecialChar,natureSpecialCharError,@Spell
+syn region natureString           start=+["'`]+ end=+["'`]+ end=+$+ contains=natureSpecialChar,natureSpecialCharError,@Spell
 
 syn match natureNumber "\v<0[xX][0-9a-fA-F_]+([iuIU]?[lL]?[0-9]{-,3})?>"
 syn match natureNumber "\v<0[bB][01_]+([iuIU]?[lL]?[0-9]{-,3})?>"
@@ -101,8 +104,8 @@ hi def link natureException             Exception
 
 syn match natureTypedef  contains=natureTypedef "\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*" display contained
 syn match natureFunc    "\%(r#\)\=\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*" display contained
-syn keyword natureKeyword union extends struct enum namespace component type nextgroup=natureTypedef skipwhite skipempty
-syn keyword natureKeyword union nextgroup=natureType skipwhite skipempty contained
+syn keyword natureKeyword union struct enum interface type nextgroup=natureTypedef skipwhite skipempty
+syn keyword natureKeyword interface nextgroup=natureType skipwhite skipempty contained
 " adapted from neovim runtime/syntax
 syn keyword natureTodo contained TODO FIXME XXX NOTE
 syn region  natureComment start="/\*" end="\*/" contains=natureTodo,@Spell
