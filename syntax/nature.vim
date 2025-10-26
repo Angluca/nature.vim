@@ -4,17 +4,17 @@ endif
 
 syn keyword natureKeyword new
 syn keyword natureKeyword type fn
-syn keyword natureKeyword as in is
-syn keyword natureKeyword var const
+syn keyword natureKeyword as in is go
+syn keyword natureKeyword var const let tatic
 syn keyword natureKeyword interface enum union
-syn keyword natureInclude import export include
-syn keyword natureException throw catch
+syn keyword natureException throw try catch
+syn keyword natureInclude import export include pub package macro alias extend
 "syn keyword natureSuper   private
 
-"syn keyword natureLabel case 
+"syn keyword natureLabel go 
 syn keyword natureRepeat for while loop
 syn keyword natureStatement break continue return
-syn keyword natureConditional if else match
+syn keyword natureConditional if else match select
 
 syn keyword natureType bool void string anyptr any ptr rawptr
 syn keyword natureType i8 i16 i32 i64 u8 u16 u32 u64 int uint
@@ -25,19 +25,19 @@ syn keyword Added true
 syn keyword Title false
 
 syn match PreProc        '[@]'
-syn match natureSymbol   '[,;]'
+syn match natureSymbol   '[,;:\.]'
 syn match Operator       '[\+\-\%=\/\^\&\*!?><\$|]'
-syn match SpecialComment '[`:\.#]'
 syn match Constant       '[{}\[\]()]'
+syn match natureTypedef  '\s\w\+\(\(<.*>\)\?\s*\.\w\+.*(.*).*{\s*\(.*}\)\?$\)\@='
 syn match natureType     '\v(\.@1<!|\.\.)\zs<([iu][0-9]{1,3})?>' display
-syn match natureType     '\w\+_t\(\W\|$\)\@='
-syn match natureTypedef  '\s\w\+\(\.\w\+.*(.*).*{\s*\(.*}\)\?$\)\@='
+syn match natureType     '\<\w\+_t\>'
 hi def natureSymbol ctermfg=DarkGray guifg=DarkGray
 
 hi def link natureFunc Function
 hi def link natureTypedef Changed
 "hi def natureType ctermfg=DarkCyan guifg=DarkCyan
 hi def link natureType MoreMsg
+"hi def link natureType SpecialComment
 "hi def natureThis ctermfg=DarkMagenta guifg=DarkMagenta
 hi def link natureThis Label
 
@@ -110,7 +110,7 @@ syn keyword natureKeyword interface nextgroup=natureType skipwhite skipempty con
 syn keyword natureTodo contained TODO FIXME XXX NOTE
 syn region  natureComment start="/\*" end="\*/" contains=natureTodo,@Spell
 syn match   natureComment "//.*$" contains=natureTodo,@Spell
-syn match   SpecialComment "^\#.*$"
+syn match   PreProc "\#.*$"
 syn match   Conditional '\v[@]\ze\w'
 
 let b:current_syntax = "nature"
