@@ -28,9 +28,12 @@ syn match PreProc        '[@]'
 syn match natureSymbol   '[,;:\.]'
 syn match Operator       '[\+\-\%=\/\^\&\*!?><\$|]'
 syn match Constant       '[{}\[\]()]'
-syn match natureTypedef  '\s\w\+\(\(<.*>\)\?\s*\.\w\+.*(.*).*{\s*\(.*}\)\?$\)\@='
+syn match natureTypedef  '\<\w\+\(\(<.*>\)\?\s*\.\w\+.*(.*).*{\s*\(.*}\)\?$\)\@='
 syn match natureType     '\v(\.@1<!|\.\.)\zs<([iu][0-9]{1,3})?>' display
 syn match natureType     '\<\w\+_t\>'
+syn match natureType     '\<[A-Z_]\+[a-z_]\+\w*\>'
+syn match kacro          '\<[A-Z_]\+\>'
+
 hi def natureSymbol ctermfg=DarkGray guifg=DarkGray
 
 hi def link natureFunc Function
