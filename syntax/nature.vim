@@ -24,15 +24,16 @@ syn keyword ModeMsg null
 syn keyword Added true 
 syn keyword Title false
 
-syn match PreProc        '[@]'
-syn match natureSymbol   '[,;:\.]'
-syn match Operator       '[\+\-\%=\/\^\&\*!?><\$|]'
-syn match Constant       '[{}\[\]()]'
-syn match natureTypedef  '\<\w\+\(\(<.*>\)\?\s*\.\w\+.*(.*).*{\s*\(.*}\)\?$\)\@='
-syn match natureType     '\v(\.@1<!|\.\.)\zs<([iu][0-9]{1,3})?>' display
-syn match natureType     '\<\w\+_t\>'
-syn match natureType     '\<[A-Z_]\+[a-z_]\+\w*\>'
-syn match kacro          '\<[A-Z_]\+\>'
+syn match PreProc       '[@]'
+syn match natureSymbol  '[,;:\.]'
+syn match Operator      '[\+\-\%=\/\^\&\*!?><\$|~]'
+syn match Constant      '[{}\[\]()]'
+syn match natureTypedef '\<\w\+\(\(<.*>\)\?\s*\.\w\+.*(.*).*{\s*\(.*}\)\?$\)\@='
+syn match natureType    '\v(\.@1<!|\.\.)\zs<([iu][0-9]{1,3})?>'
+syn match natureType    '\<\w\+_\l\>'
+syn match natureType    '\<[_]*\u[A-Z_]*[a-z_]\+\w*\>'
+syn match Macro         '\<[_]*\u[A-Z_]*\>'
+syn match Exception     '\(\W\@<=[&*]\+\ze\w\)\|\(\w\@<=[*]\+\ze\W\)'
 
 hi def natureSymbol ctermfg=DarkGray guifg=DarkGray
 
@@ -44,13 +45,12 @@ hi def link natureType MoreMsg
 "hi def natureThis ctermfg=DarkMagenta guifg=DarkMagenta
 hi def link natureThis Label
 
-syn match Repeat   "\([^\.]\.\)\@<=\w\w*\(\(\[.*\]\)*\s*(\)\@!"
-syn match natureType '\(:\s*\)\@<=\w\w*\(\(\(\(\[.*\]\)\|\({.*}\)\|\(\w\+\)\|\(\*\|?\|!\)\)\s*\)*\)\@='
+syn match Repeat        "\([^\.]\.\)\@<=\w\w*\(\(\[.*\]\)*\s*(\)\@!"
+syn match natureType    '\(:\s*\)\@<=\w\w*\(\(\(\(\[.*\]\)\|\({.*}\)\|\(\w\+\)\|\(\*\|?\|!\)\)\s*\)*\)\@='
 
 syn match natureType    "\v\w+\ze\<.*\>" "foo<T>();
 "syn match natureType    "\w\(\w\)*<"he=e-1,me=e-1 " foo<T>();
-"syn match natureType    "\(->\s*\)\@<=\w\(\w\)*"
-syn match natureFunc    "[0-9a-zA-Z_@]*\w\w*\(\(<.*>\s*\)*\(\[.*\]\)*\s*(\)\@="
+syn match Function      '\v\w+\ze((\[.*\])|(\<.*\>))*\s*\('
 
 syn match  natureSpecialCharError display contained +\\\([^0-7nrt\\'"]\|[xX]\x\{2}\)+
 syn match  natureSpecialChar      contained "\\\([\"\\'ntr]\|[xX]\x\{2}\)"
@@ -114,6 +114,5 @@ syn keyword natureTodo contained TODO FIXME XXX NOTE
 syn region  natureComment start="/\*" end="\*/" contains=natureTodo,@Spell
 syn match   natureComment "//.*$" contains=natureTodo,@Spell
 syn match   PreProc "\#.*$"
-syn match   Conditional '\v[@]\ze\w'
 
 let b:current_syntax = "nature"
