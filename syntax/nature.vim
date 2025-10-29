@@ -31,8 +31,8 @@ syn match Constant      '[{}\[\]()]'
 syn match natureTypedef '\<\w\+\(\(<.*>\)\?\s*\.\w\+.*(.*).*{\s*\(.*}\)\?$\)\@='
 syn match natureType    '\v(\.@1<!|\.\.)\zs<([iu][0-9]{1,3})?>'
 syn match natureType    '\<\w\+_\l\>'
-syn match natureType    '\<[_]*\u[A-Z_]*[a-z_]\+\w*\>'
-syn match Macro         '\<[_]*\u[A-Z_]*\>'
+syn match natureType    '\<[_]*\u[A-Z0-9_]*[a-z0-9_]\+\w*\>'
+syn match Macro         '\<[_]*\u[A-Z0-9_]*\>'
 syn match Exception     '\(\W\@<=[&*]\+\ze\w\)\|\(\w\@<=[*]\+\ze\W\)'
 
 hi def natureSymbol ctermfg=DarkGray guifg=DarkGray
