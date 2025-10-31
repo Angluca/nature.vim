@@ -28,15 +28,24 @@ syn match PreProc       '[@]'
 syn match natureSymbol  '[,;:\.]'
 syn match Operator      '[\+\-\%=\/\^\&\*!?><\$|~]'
 syn match Constant      '[{}\[\]()]'
-syn match natureTypedef '\<\w\+\(\(<.*>\)\?\s*\.\w\+.*(.*).*{\s*\(.*}\)\?$\)\@='
-syn match natureType    '\v(\.@1<!|\.\.)\zs<([iu][0-9]{1,3})?>'
-syn match natureType    '\<\w\+_\l\>'
-syn match natureType    '\<[_]*\u[A-Z0-9_]*[a-z0-9_]\+\w*\>'
-syn match Macro         '\<[_]*\u[A-Z0-9_]*\>'
-syn match Exception     '\(\W\@<=[&*]\+\ze\w\)\|\(\w\@<=[*]\+\ze\W\)'
+"syn match natureTypedef '\<\w\+\(\(<.*>\)\?\s*\.\w\+.*(.*).*{\s*\(.*}\)\?$\)\@='
+syn match natureType    '\v<\w+_[tscemui]>'
+syn match Macro         '\v<[_]*\u[A-Z0-9_]*>'
+syn match natureType    '\v<[_]*\u[A-Z0-9_]*[a-z]+\w*>'
+syn match natureType    '\v\.?\zs<([iu][0-9]{1,3})?>'
+syn match Repeat        '\v([^\.](\.|::))@<=\w\w*'
+syn match natureMacro   '\v(::\s*)@<=[_]*\u\w*'
+syn match natureType    '\v\w+\ze(::|\<[.*]*\>)' "foo<T>()
+syn match Function      '\v[_]*\l\w*\ze((\[.*\])|((::)?\<.*\>))*\s*\('
+syn match natureType    '\v(([^:]:|-\>)\s*\&*)@<=\w\w*>'
+
+syn match Exception     '\v(\W@<=[~&*]+\ze[\(\[\{\<]*\'?\w)|(\w@<=[*]+\ze\W)'
+syn match Changed       '\v((type|interface|struct|enum|union)(\<.*\>)?\s*)@<=[_]*\u\w*\ze(\<.*\>)?\s*(\(|\{)'
+"syn keyword Keyword type struct enum interface nextgroup=natureTypedef skipwhite skipempty
 
 hi def natureSymbol ctermfg=DarkGray guifg=DarkGray
 
+hi def link natureMacro SpecialComment
 hi def link natureFunc Function
 hi def link natureTypedef Changed
 "hi def natureType ctermfg=DarkCyan guifg=DarkCyan
@@ -44,13 +53,6 @@ hi def link natureType MoreMsg
 "hi def link natureType SpecialComment
 "hi def natureThis ctermfg=DarkMagenta guifg=DarkMagenta
 hi def link natureThis Label
-
-syn match Repeat        "\([^\.]\.\)\@<=\w\w*\(\(\[.*\]\)*\s*(\)\@!"
-syn match natureType    '\(:\s*\)\@<=\w\w*\(\(\(\(\[.*\]\)\|\({.*}\)\|\(\w\+\)\|\(\*\|?\|!\)\)\s*\)*\)\@='
-
-syn match natureType    "\v\w+\ze\<.*\>" "foo<T>();
-"syn match natureType    "\w\(\w\)*<"he=e-1,me=e-1 " foo<T>();
-syn match Function      '\v\w+\ze((\[.*\])|(\<.*\>))*\s*\('
 
 syn match  natureSpecialCharError display contained +\\\([^0-7nrt\\'"]\|[xX]\x\{2}\)+
 syn match  natureSpecialChar      contained "\\\([\"\\'ntr]\|[xX]\x\{2}\)"
