@@ -37,13 +37,14 @@ syn match Repeat        '\v([^\.](\.|::))@<=\w\w*'
 syn match natureMacro   '\v(::\s*)@<=[_]*\u\w*'
 syn match natureType    '\v\w+\ze(::|\<[.*]*\>)' "foo<T>()
 syn match Function      '\v[_]*\l\w*\ze((\[.*\])|((::)?\<.*\>))*\s*\('
-syn match natureType    '\v(([^:]:|-\>)\s*\&*)@<=\w\w*>'
+"syn match natureType    '\v(([^:]:|-\>)\s*\&*)@<=\w\w*>'
 
 syn match Exception     '\v(\W@<=[~&*]+\ze[\(\[\{\<]*\'?\w)|(\w@<=[*]+\ze\W)'
 syn match Changed       '\v((type|interface|struct|enum|union)(\<.*\>)?\s*)@<=[_]*\u\w*\ze(\<.*\>)?\s*(\(|\{)'
 "syn keyword Keyword type struct enum interface nextgroup=natureTypedef skipwhite skipempty
 
-hi def natureSymbol ctermfg=DarkGray guifg=DarkGray
+"hi def natureSymbol ctermfg=DarkGray guifg=DarkGray
+hi def link natureSymbol Changed
 
 hi def link natureMacro SpecialComment
 hi def link natureFunc Function
