@@ -4,7 +4,7 @@ endif
 
 syn keyword natureKeyword new
 syn keyword natureKeyword type fn
-syn keyword natureKeyword var const let tatic
+syn keyword natureKeyword var const let static
 syn keyword natureKeyword interface enum union
 syn keyword natureException throw try catch
 syn keyword natureInclude export include pub package macro alias extend
@@ -19,11 +19,7 @@ syn keyword natureConditional if else match select
 syn keyword natureType bool void string anyptr any ptr rawptr
 syn keyword natureType i8 i16 i32 i64 u8 u16 u32 u64 int uint
 syn keyword natureType float f32 f64
-syn keyword natureThis self
-
-"syn keyword ModeMsg null
-"syn keyword Added true 
-"syn keyword Title false
+syn keyword natureSelf self
 
 syn match PreProc       '[@]'
 syn match natureSymbol  '[,;:\.]'
@@ -35,20 +31,18 @@ syn match Macro         '\v<[_]*\u[A-Z0-9_]*>'
 syn match natureType    '\v<[_]*\u[A-Z0-9_]*[a-z]+\w*>'
 syn match natureType    '\v\.?\zs<([iu][0-9]{1,3})?>'
 syn match Repeat        '\v([^\.](\.|::))@<=\w\w*'
-syn match natureMacro   '\v(::\s*)@<=[_]*\u\w*'
+syn match natureSMacro   '\v(::\s*)@<=[_]*\u\w*'
 syn match natureType    '\v\w+\ze(::|\<[.*]*\>)' "foo<T>()
 syn match Function      '\v[_]*\l\w*\ze((\[.*\])|((::)?\<.*\>))*\s*\('
 "syn match natureType    '\v(([^:]:|-\>)\s*\&*)@<=\w\w*>'
 
-syn match Exception     '\v(\W@<=[~&*]+\ze[\(\[\{\<]*\'?\w)|(\w@<=[*]+\ze\W)'
+syn match Exception     '\v(\W@<=[~&*]+\ze[\(\[\{\<]*[-]?\w)|(\w@<=[*]+\ze\W)'
 syn match Changed       '\v((type|interface|struct|enum|union)(\<.*\>)?\s*)@<=[_]*\u\w*\ze(\<.*\>)?\s*(\(|\{)'
 "syn keyword Keyword type struct enum interface nextgroup=natureTypedef skipwhite skipempty
 
-syn match natureInclude '\v^\s*import .*[^*]'
-syn match natureMacro   '\v^\s*\[.{-}\]'
-"syn match natureType    '\v<(str)\ze\s*\('
-"syn match natureLabel   '\v<(addr)\ze\s*\('
-"syn match natureAdded   '\v^\s*<(test)\ze\s*\{'
+syn match natureInclude '\v^\s*import [^*]*'
+syn match natureMacro   '\v^\[.{-}\]'
+syn match natureSMacro  '\v<(assert)(_\w+)?>\ze\s*\('
 
 " -- shader
 "syn keyword natureKeyword  uniform instance varying var
@@ -63,18 +57,15 @@ syn match   natureType     '\v<[dbui]?vec[234]>'
 syn match   natureType     '\v<vec[234][dbfhui]?>'
 syn match   natureType     '\v<mat[234](x[234]f)?>'
 
-hi def link natureSMacro    SpecialComment
 hi def link natureConstant  Constant
 hi def link natureTitle     Title
 hi def link natureSymbol    Changed
-hi def link natureMacro     SpecialComment
+hi def link natureMacro     Macro
+hi def link natureSMacro    SpecialComment
 hi def link natureFunc      Function
 hi def link natureTypedef   Changed
-"hi def natureType ctermfg=DarkCyan guifg=DarkCyan
 hi def link natureType      MoreMsg
-"hi def link natureType SpecialComment
-"hi def natureThis ctermfg=DarkMagenta guifg=DarkMagenta
-hi def link natureThis      Label
+hi def link natureSelf      Label
 
 syn match  natureSpecialCharError display contained +\\\([^0-7nrt\\'"]\|[xX]\x\{2}\)+
 syn match  natureSpecialChar      contained "\\\([\"\\'ntr]\|[xX]\x\{2}\)"
