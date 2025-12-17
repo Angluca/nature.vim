@@ -4,15 +4,15 @@ endif
 
 syn keyword natureKeyword new
 syn keyword natureKeyword type fn
-syn keyword natureKeyword as in is go
 syn keyword natureKeyword var const let tatic
 syn keyword natureKeyword interface enum union
 syn keyword natureException throw try catch
-syn keyword natureInclude import export include pub package macro alias extend
+syn keyword natureInclude export include pub package macro alias extend
 "syn keyword natureSuper   private
 
 "syn keyword natureLabel go 
-syn keyword natureRepeat for while loop
+syn keyword natureRepeat for while loop in is go
+syn keyword natureOperator as 
 syn keyword natureStatement break continue return
 syn keyword natureConditional if else match select
 
@@ -20,9 +20,10 @@ syn keyword natureType bool void string anyptr any ptr rawptr
 syn keyword natureType i8 i16 i32 i64 u8 u16 u32 u64 int uint
 syn keyword natureType float f32 f64
 syn keyword natureThis self
-syn keyword ModeMsg null
-syn keyword Added true 
-syn keyword Title false
+
+"syn keyword ModeMsg null
+"syn keyword Added true 
+"syn keyword Title false
 
 syn match PreProc       '[@]'
 syn match natureSymbol  '[,;:\.]'
@@ -43,36 +44,67 @@ syn match Exception     '\v(\W@<=[~&*]+\ze[\(\[\{\<]*\'?\w)|(\w@<=[*]+\ze\W)'
 syn match Changed       '\v((type|interface|struct|enum|union)(\<.*\>)?\s*)@<=[_]*\u\w*\ze(\<.*\>)?\s*(\(|\{)'
 "syn keyword Keyword type struct enum interface nextgroup=natureTypedef skipwhite skipempty
 
-"hi def natureSymbol ctermfg=DarkGray guifg=DarkGray
-hi def link natureSymbol Changed
+syn match natureInclude '\v^\s*import .*[^*]'
+syn match natureMacro   '\v^\s*\[.{-}\]'
+"syn match natureType    '\v<(str)\ze\s*\('
+"syn match natureLabel   '\v<(addr)\ze\s*\('
+"syn match natureAdded   '\v^\s*<(test)\ze\s*\{'
 
-hi def link natureMacro SpecialComment
-hi def link natureFunc Function
-hi def link natureTypedef Changed
+" -- shader
+"syn keyword natureKeyword  uniform instance varying var
+"syn keyword natureKeyword  vertex fragment
+"syn keyword natureType     texture texture2D
+syn match   natureType     '\v<bool[234]?>'
+syn match   natureType     '\v<int[234]?>'
+syn match   natureType     '\v<uint[234]?>'
+syn match   natureType     '\v<half[234]?>'
+syn match   natureType     '\v<float([234](x[234])?)?>'
+syn match   natureType     '\v<[dbui]?vec[234]>'
+syn match   natureType     '\v<vec[234][dbfhui]?>'
+syn match   natureType     '\v<mat[234](x[234]f)?>'
+
+hi def link natureSMacro    SpecialComment
+hi def link natureConstant  Constant
+hi def link natureTitle     Title
+hi def link natureSymbol    Changed
+hi def link natureMacro     SpecialComment
+hi def link natureFunc      Function
+hi def link natureTypedef   Changed
 "hi def natureType ctermfg=DarkCyan guifg=DarkCyan
-hi def link natureType MoreMsg
+hi def link natureType      MoreMsg
 "hi def link natureType SpecialComment
 "hi def natureThis ctermfg=DarkMagenta guifg=DarkMagenta
-hi def link natureThis Label
+hi def link natureThis      Label
 
 syn match  natureSpecialCharError display contained +\\\([^0-7nrt\\'"]\|[xX]\x\{2}\)+
 syn match  natureSpecialChar      contained "\\\([\"\\'ntr]\|[xX]\x\{2}\)"
 syn match  natureCharacter        "'[^']*'" contains=natureSpecialChar,natureSpecialCharError
 syn match  natureCharacter        "'\\''" contains=natureSpecialChar
 syn match  natureCharacter        "'[^\\]'"
-syn region natureString           start=+["'`]+ end=+["'`]+ end=+$+ contains=natureSpecialChar,natureSpecialCharError,@Spell
+
+"syn region    natureString      matchgroup=natureString start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=natureEscape,@Spell
+syn region    natureString      matchgroup=natureString start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=@Spell
+syn region    natureString      matchgroup=natureString start=+'+ skip=+\\\\\|\\'+ end=+'+ contains=@Spell
+syn region    natureString      matchgroup=natureString start=+`+ skip=+\\\\\|\\`+ end=+`+ contains=@Spell
 
 syn match natureNumber "\v<0[xX][0-9a-fA-F_]+([iuIU]?[lL]?[0-9]{-,3})?>"
 syn match natureNumber "\v<0[bB][01_]+([iuIU]?[lL]?[0-9]{-,3})?>"
 
-syn match natureFloat '\v<\.?\d+([eE][+-]?\d+)?[fFdD]?>' display
-syn match natureFloat '\v<(0|[1-9]\d*)([eE][+-]?\d+)?[fFdD]?>' display
-syn match natureFloat '\v<0x\x+(\.\x+)?[pP][+-]?\d+[fFdD]?>' display
+syn match natureFloat  '\v<\.\d+([eE][+-]?\d+)?[fFdD]?>' display
+syn match natureFloat  '\v<([0][1-9]*)([eE][+-]?\d+)?[fFdD]?>' display
+syn match natureFloat  '\v<0x\x+(\.\x+)?[pP][+-]?\d+[fFdD]?>' display
+
 " Integer literals
 syn match natureInteger '\v(\.@1<!|\.\.)\zs<(0|[1-9]\d*)([eE][+-]?\d+)?([iuIU]?[lL]?[0-9]{-,3})?>' display
 syn match natureInteger '\v(\.@1<!|\.\.)\zs<0b[01]+([iuIU]?[lL]?[0-9]{-,3})?>' display
 syn match natureInteger '\v(\.@1<!|\.\.)\zs<0o\o+([iuIU]?[lL]?[0-9]{-,3})?>' display
 syn match natureInteger '\v(\.@1<!|\.\.)\zs<0x\x+([iuIU]?[lL]?[0-9]{-,3})?>' display
+
+syn match natureFloat   display "\<[0-9][0-9_]*\.\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\|\.\)\@!"
+syn match natureFloat   display "\<[0-9][0-9_]*\%(\.[0-9][0-9_]*\)\%([eE][+-]\=[0-9_]\+\)\=\(f32\|f64\)\="
+syn match natureFloat   display "\<[0-9][0-9_]*\%(\.[0-9][0-9_]*\)\=\%([eE][+-]\=[0-9_]\+\)\(f32\|f64\)\="
+syn match natureFloat   display "\<[0-9][0-9_]*\%(\.[0-9][0-9_]*\)\=\%([eE][+-]\=[0-9_]\+\)\=\(f32\|f64\)"
+
 " Escape sequences
 syn match natureEscape '\\[\\'"0abfnrtv]' contained display
 syn match natureEscape '\v\\(x\x{2}|u\x{4}|U\x{8})' contained display
@@ -82,7 +114,7 @@ syn match natureFormat '{{\|}}' contained display
 
 
 hi def link natureSuper                 Title
-hi def link natureFloat                 Number
+hi def link natureFloat                 Float
 hi def link natureInteger               Number
 hi def link natureEscape                SpecialComment
 hi def link natureFormat                SpecialChar
@@ -103,7 +135,6 @@ hi def link natureTodo                  Todo
 hi def link natureSpecial               Special
 hi def link natureSpecialError          Error
 hi def link natureSpecialCharError      Error
-hi def link natureString                String
 hi def link natureCharacter             Character
 hi def link natureSpecialChar           SpecialChar
 hi def link natureException             Exception
