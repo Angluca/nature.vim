@@ -12,50 +12,54 @@ syn keyword natureInclude export include pub package macro alias extend
 
 "syn keyword natureLabel go 
 syn keyword natureRepeat for while loop in is go
-syn keyword natureOperator as 
+syn keyword natureLabel as 
 syn keyword natureStatement break continue return
 syn keyword natureConditional if else match select
 
 syn keyword natureType bool void string anyptr any ptr rawptr
 syn keyword natureType i8 i16 i32 i64 u8 u16 u32 u64 int uint
 syn keyword natureType float f32 f64
+syn keyword natureConstant true false null
+syn keyword natureTitle panic
 syn keyword natureSelf self
 
+"syn match natureType    '\v<(\w+)>\ze\s*\<(\w+\s*(\<.*\>|\[.*\])?\s*[,]?\s*)*\>'
+syn match natureType    '\v<(\w+)>\ze\s+\w+\s*(\[.*\])?[;]?$'
 syn match PreProc       '[@]'
 syn match natureSymbol  '[,;:\.]'
 syn match Operator      '[\+\-\%=\/\^\&\*!?><\$|~]'
 syn match Constant      '[{}\[\]()]'
-"syn match natureTypedef '\<\w\+\(\(<.*>\)\?\s*\.\w\+.*(.*).*{\s*\(.*}\)\?$\)\@='
-syn match natureType    '\v<\w+_[tscemui]>'
+syn match natureType    '\v<\w+_([tscemui])>'
 syn match Macro         '\v<[_]*\u[A-Z0-9_]*>'
 syn match natureType    '\v<[_]*\u[A-Z0-9_]*[a-z]+\w*>'
 syn match natureType    '\v\.?\zs<([iu][0-9]{1,3})?>'
 syn match Repeat        '\v([^\.](\.|::))@<=\w\w*'
 syn match natureSMacro   '\v(::\s*)@<=[_]*\u\w*'
-syn match natureType    '\v\w+\ze(::|\<[.*]*\>)' "foo<T>()
+"syn match natureType    '\v\w+\ze(::|\<[.*]*\>)' "foo<T>()
+syn match natureType    '\v<\w+>\ze(::|\<(\w+\s*(\<.*\>|\[.*\])?\s*[,]?\s*)*\>)' "foo<T>()
 syn match Function      '\v[_]*\l\w*\ze((\[.*\])|((::)?\<.*\>))*\s*\('
-"syn match natureType    '\v(([^:]:|-\>)\s*\&*)@<=\w\w*>'
 
 syn match Exception     '\v(\W@<=[~&*]+\ze[\(\[\{\<]*[-]?\w)|(\w@<=[*]+\ze\W)'
 syn match Changed       '\v((type|interface|struct|enum|union)(\<.*\>)?\s*)@<=[_]*\u\w*\ze(\<.*\>)?\s*(\(|\{)'
-"syn keyword Keyword type struct enum interface nextgroup=natureTypedef skipwhite skipempty
 
+syn match natureMacro   '\v^\[[^;=]+\]\s*$'
 syn match natureInclude '\v^\s*import [^*]*'
-syn match natureMacro   '\v^\[.{-}\]'
 syn match natureSMacro  '\v<(assert)(_\w+)?>\ze\s*\('
+syn match natureLabel   '\v<\@(\w+)>\ze\s*\('
 
 " -- shader
 "syn keyword natureKeyword  uniform instance varying var
 "syn keyword natureKeyword  vertex fragment
 "syn keyword natureType     texture texture2D
-syn match   natureType     '\v<bool[234]?>'
-syn match   natureType     '\v<int[234]?>'
-syn match   natureType     '\v<uint[234]?>'
-syn match   natureType     '\v<half[234]?>'
-syn match   natureType     '\v<float([234](x[234])?)?>'
-syn match   natureType     '\v<[dbui]?vec[234]>'
-syn match   natureType     '\v<vec[234][dbfhui]?>'
-syn match   natureType     '\v<mat[234](x[234]f)?>'
+syn match natureType    '\v<bool[234]?>'
+syn match natureType    '\v<int[234]?>'
+syn match natureType    '\v<uint[234]?>'
+syn match natureType    '\v<half[234]?>'
+syn match natureType    '\v<float([234](x[234])?)?>'
+syn match natureType    '\v<[dbui]?vec[234]>'
+syn match natureType    '\v<vec[234][dbfhui]?>'
+syn match natureType    '\v<mat[234](x[234]f)?>'
+syn match Keyword       '\v^<(in|out)>'
 
 hi def link natureConstant  Constant
 hi def link natureTitle     Title
@@ -116,7 +120,6 @@ hi def link natureLabel                 Label
 hi def link natureConditional           Conditional
 hi def link natureRepeat                Repeat
 hi def link natureStatement             Statement
-"hi def link natureType                  Type
 hi def link natureNumber                Number
 hi def link natureComment               Comment
 hi def link natureOperator              Operator
