@@ -40,7 +40,7 @@ syn match natureType    '\v<\w+>\ze(::|\<(\w+\s*(\<.*\>|\[.*\])?\s*[,]?\s*)*\>)'
 syn match Function      '\v[_]*\l\w*\ze((\[.*\])|((::)?\<.*\>))*\s*\('
 
 syn match Exception     '\v(\W@<=[~&*]+\ze[\(\[\{\<]*[-]?\w)|(\w@<=[*]+\ze\W)'
-syn match Changed       '\v((type|interface|struct|enum|union)(\<.*\>)?\s*)@<=[_]*\u\w*\ze(\<.*\>)?\s*(\(|\{)'
+"syn match Changed       '\v((type|interface|struct|enum|union)(\<.*\>)?\s*)@<=[_]*\u\w*\ze(\<.*\>)?\s*(\(|\{)'
 
 syn match natureMacro   '\v^\[[^;=]+\]\s*$'
 syn match natureInclude '\v^\s*import [^*]*'
@@ -48,9 +48,8 @@ syn match natureSMacro  '\v<(assert)(_\w+)?>\ze\s*\('
 syn match natureLabel   '\v<\@(\w+)>\ze\s*\('
 
 " -- shader
-"syn keyword natureKeyword  uniform instance varying var
-"syn keyword natureKeyword  vertex fragment
-"syn keyword natureType     texture texture2D
+syn match natureKeyword '\v<(uniform|instance|varying|var|vertex|fragment|in|out)>\s'
+syn match natureType    '\v<(texture|texture2D)>\s'
 syn match natureType    '\v<bool[234]?>'
 syn match natureType    '\v<int[234]?>'
 syn match natureType    '\v<uint[234]?>'
@@ -59,7 +58,7 @@ syn match natureType    '\v<float([234](x[234])?)?>'
 syn match natureType    '\v<[dbui]?vec[234]>'
 syn match natureType    '\v<vec[234][dbfhui]?>'
 syn match natureType    '\v<mat[234](x[234]f)?>'
-syn match Keyword       '\v^<(in|out)>'
+syn match natureType    '\v<(vec|mat|list)\ze\['
 
 hi def link natureConstant  Constant
 hi def link natureTitle     Title

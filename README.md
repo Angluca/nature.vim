@@ -1,5 +1,7 @@
 #### Vim plugin for nature language
-https://github.com/nature-lang/nature
+https://github.com/nature-lang/nature  
+
+Install using [vim-plug](https://github.com/junegunn/vim-plug)
 ```vim
 Plug 'angluca/nature.vim'
 ```
