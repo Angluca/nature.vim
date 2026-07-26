@@ -2,67 +2,111 @@ if exists("b:current_syntax")
     finish
 endif
 
-syn keyword natureKeyword as
 syn keyword natureKeyword new
-"syn keyword natureSuper   private super
 syn keyword natureKeyword type fn
-syn keyword natureKeyword var let const
-syn keyword natureKeyword interface tuple
-syn keyword natureKeyword enum 
-syn keyword natureInclude import export include
+syn keyword natureKeyword var const let static
+syn keyword natureKeyword interface enum union
+syn keyword natureException throw try catch
+syn keyword natureInclude export include pub package macro alias extend
+"syn keyword natureSuper   private
 
-syn keyword natureLabel case match switch
-syn keyword natureRepeat for while loop
+"syn keyword natureLabel go 
+syn keyword natureRepeat for while loop in is go
+syn keyword natureLabel as 
 syn keyword natureStatement break continue return
-syn keyword natureConditional if else
+syn keyword natureConditional if else match select
 
-syn keyword natureType bool void string anyptr ptr
-syn keyword natureType float f32 f64
+syn keyword natureType bool void string anyptr any ptr rawptr
 syn keyword natureType i8 i16 i32 i64 u8 u16 u32 u64 int uint
-syn keyword natureCharacter true null false nil
-syn keyword natureThis self
+syn keyword natureType float f32 f64
+syn keyword natureConstant true false null
+syn keyword natureTitle panic
+syn keyword natureSelf self
 
-syn match PreProc        '[@]'
-syn match natureSymbol   '[,;]'
-syn match Operator       '[\+\-\%=\/\^\&\*!?><\$|]'
-syn match SpecialComment '[`:\.#]'
-syn match Constant       '[{}\[\]()]'
-syn match natureType     '\v(\.@1<!|\.\.)\zs<([iu][0-9]{1,3})?>' display
-hi def natureSymbol ctermfg=DarkGray guifg=DarkGray
+"syn match natureType    '\v<(\w+)>\ze\s*\<(\w+\s*(\<.*\>|\[.*\])?\s*[,]?\s*)*\>'
+syn match natureType    '\v<(\w+)>\ze\s+\w+\s*(\[.*\])?[;]?$'
+syn match PreProc       '[@]'
+syn match natureSymbol  '[,;:\.]'
+syn match Operator      '[\+\-\%=\/\^\&\*!?><\$|~]'
+syn match Constant      '[{}\[\]()]'
+syn match natureType    '\v<\w+_([tscemui])>'
+syn match Macro         '\v<[_]*\u[A-Z0-9_]*>'
+syn match natureType    '\v<[_]*\u[A-Z0-9_]*[a-z]+\w*>'
+syn match natureType    '\v\.?\zs<([iu][0-9]{1,3})?>'
+syn match Repeat        '\v([^\.](\.|::))@<=\w\w*'
+syn match natureSMacro   '\v(::\s*)@<=[_]*\u\w*'
+"syn match natureType    '\v\w+\ze(::|\<[.*]*\>)' "foo<T>()
+syn match natureType    '\v<\w+>\ze(::|\<(\w+\s*(\<.*\>|\[.*\])?\s*[,]?\s*)*\>)' "foo<T>()
+syn match Function      '\v[_]*\l\w*\ze((\[.*\])|((::)?\<.*\>))*\s*\('
 
-hi def link natureFunc Function
-hi def link natureTypedef Changed
-"hi def natureType ctermfg=DarkCyan guifg=DarkCyan
-hi def link natureType MoreMsg
-"hi def natureThis ctermfg=DarkMagenta guifg=DarkMagenta
-hi def link natureThis Label
+syn match Exception     '\v(\W@<=[~&*]+\ze[\(\[\{\<]*[-]?\w)|(\w@<=[*]+\ze\W)'
+"syn match Changed       '\v((type|interface|struct|enum|union)(\<.*\>)?\s*)@<=[_]*\u\w*\ze(\<.*\>)?\s*(\(|\{)'
 
-syn match Repeat   "\([^\.]\.\)\@<=\w\w*\(\(\[.*\]\)*\s*(\)\@!"
-syn match natureType '\(:\s*\)\@<=\w\w*\(\(\(\(\[.*\]\)\|\({.*}\)\|\(\w\+\)\|\(\*\|?\|!\)\)\s*\)*\)\@='
+syn match natureMacro   '\v^\[[^;=]+\]\s*$'
+syn match natureInclude '\v^\s*import [^*]*'
+syn match natureSMacro  '\v<(assert)(_\w+)?>\ze\s*\('
+syn match natureLabel   '\v<\@(\w+)>\ze\s*\('
 
-syn match natureType    "\v\w+\ze\<.*\>" "foo<T>();
-"syn match natureType    "\w\(\w\)*<"he=e-1,me=e-1 " foo<T>();
-syn match natureType    "\(->\s*\)\@<=\w\(\w\)*"
-syn match natureFunc    "[0-9a-zA-Z_@]*\w\w*\(\(<.*>\s*\)*\(\[.*\]\)*\s*(\)\@="
+syn match machConstant contained /\v[\<,\>]/
+syn region machConstantSpec
+    \ oneline
+    \ keepend
+    \ contains=machType,machOperator,machMacro,machSComment,machConstant,machConstantSpec
+    \ start=/\v\<\s*/
+    \ end=/\v\s*\>/
+
+" -- shader
+syn match natureKeyword '\v<(uniform|instance|varying|var|vertex|fragment|in|out)>\s'
+syn match natureType    '\v<(texture|texture2D)>\s'
+syn match natureType    '\v<bool[234]?>'
+syn match natureType    '\v<int[234]?>'
+syn match natureType    '\v<uint[234]?>'
+syn match natureType    '\v<half[234]?>'
+syn match natureType    '\v<float([234](x[234])?)?>'
+syn match natureType    '\v<[dbui]?vec[234]>'
+syn match natureType    '\v<vec[234][dbfhui]?>'
+syn match natureType    '\v<mat[234](x[234]f)?>'
+syn match natureType    '\v<(vec|mat|list)\ze\['
+
+hi def link natureConstant  Constant
+hi def link natureTitle     Title
+hi def link natureSymbol    Changed
+hi def link natureMacro     Macro
+hi def link natureSMacro    SpecialComment
+hi def link natureFunc      Function
+hi def link natureTypedef   Changed
+hi def link natureType      MoreMsg
+hi def link natureSelf      Label
 
 syn match  natureSpecialCharError display contained +\\\([^0-7nrt\\'"]\|[xX]\x\{2}\)+
 syn match  natureSpecialChar      contained "\\\([\"\\'ntr]\|[xX]\x\{2}\)"
-syn region natureString           start=+"+ end=+"+ end=+$+ contains=natureSpecialChar,natureSpecialCharError,@Spell
 syn match  natureCharacter        "'[^']*'" contains=natureSpecialChar,natureSpecialCharError
 syn match  natureCharacter        "'\\''" contains=natureSpecialChar
 syn match  natureCharacter        "'[^\\]'"
 
+"syn region    natureString      matchgroup=natureString start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=natureEscape,@Spell
+syn region    natureString      matchgroup=natureString start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=@Spell
+syn region    natureString      matchgroup=natureString start=+'+ skip=+\\\\\|\\'+ end=+'+ contains=@Spell
+syn region    natureString      matchgroup=natureString start=+`+ skip=+\\\\\|\\`+ end=+`+ contains=@Spell
+
 syn match natureNumber "\v<0[xX][0-9a-fA-F_]+([iuIU]?[lL]?[0-9]{-,3})?>"
 syn match natureNumber "\v<0[bB][01_]+([iuIU]?[lL]?[0-9]{-,3})?>"
 
-syn match natureFloat '\v<\.?\d+([eE][+-]?\d+)?[fFdD]?>' display
-syn match natureFloat '\v<(0|[1-9]\d*)([eE][+-]?\d+)?[fFdD]?>' display
-syn match natureFloat '\v<0x\x+(\.\x+)?[pP][+-]?\d+[fFdD]?>' display
+syn match natureFloat  '\v<\.\d+([eE][+-]?\d+)?[fFdD]?>' display
+"syn match natureFloat  '\v<([0][1-9]*)([eE][+-]?\d+)?[fFdD]?>' display
+syn match natureFloat  '\v<0x\x+(\.\x+)?[pP][+-]?\d+[fFdD]?>' display
+
 " Integer literals
 syn match natureInteger '\v(\.@1<!|\.\.)\zs<(0|[1-9]\d*)([eE][+-]?\d+)?([iuIU]?[lL]?[0-9]{-,3})?>' display
 syn match natureInteger '\v(\.@1<!|\.\.)\zs<0b[01]+([iuIU]?[lL]?[0-9]{-,3})?>' display
 syn match natureInteger '\v(\.@1<!|\.\.)\zs<0o\o+([iuIU]?[lL]?[0-9]{-,3})?>' display
 syn match natureInteger '\v(\.@1<!|\.\.)\zs<0x\x+([iuIU]?[lL]?[0-9]{-,3})?>' display
+
+syn match natureFloat   display "\<[0-9][0-9_]*\.\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\|\.\)\@!"
+syn match natureFloat   display "\<[0-9][0-9_]*\%(\.[0-9][0-9_]*\)\%([eE][+-]\=[0-9_]\+\)\=\(f32\|f64\)\="
+syn match natureFloat   display "\<[0-9][0-9_]*\%(\.[0-9][0-9_]*\)\=\%([eE][+-]\=[0-9_]\+\)\(f32\|f64\)\="
+syn match natureFloat   display "\<[0-9][0-9_]*\%(\.[0-9][0-9_]*\)\=\%([eE][+-]\=[0-9_]\+\)\=\(f32\|f64\)"
+
 " Escape sequences
 syn match natureEscape '\\[\\'"0abfnrtv]' contained display
 syn match natureEscape '\v\\(x\x{2}|u\x{4}|U\x{8})' contained display
@@ -72,7 +116,7 @@ syn match natureFormat '{{\|}}' contained display
 
 
 hi def link natureSuper                 Title
-hi def link natureFloat                 Number
+hi def link natureFloat                 Float
 hi def link natureInteger               Number
 hi def link natureEscape                SpecialComment
 hi def link natureFormat                SpecialChar
@@ -83,7 +127,6 @@ hi def link natureLabel                 Label
 hi def link natureConditional           Conditional
 hi def link natureRepeat                Repeat
 hi def link natureStatement             Statement
-"hi def link natureType                  Type
 hi def link natureNumber                Number
 hi def link natureComment               Comment
 hi def link natureOperator              Operator
@@ -93,20 +136,18 @@ hi def link natureTodo                  Todo
 hi def link natureSpecial               Special
 hi def link natureSpecialError          Error
 hi def link natureSpecialCharError      Error
-hi def link natureString                String
 hi def link natureCharacter             Character
 hi def link natureSpecialChar           SpecialChar
 hi def link natureException             Exception
 
-syn match natureTypedef  contains=natureTypedef "\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*" display contained
-syn match natureFunc    "\%(r#\)\=\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*" display contained
-syn keyword natureKeyword union extends struct enum namespace component type nextgroup=natureTypedef skipwhite skipempty
-syn keyword natureKeyword union nextgroup=natureType skipwhite skipempty contained
+syn match   natureTypedef "\h\w*" display contained
+syn match   natureFunc "\h\w*" display contained
+syn keyword natureKeyword union struct enum interface type nextgroup=natureTypedef skipwhite skipempty
+syn keyword natureKeyword interface nextgroup=natureType skipwhite skipempty contained
 " adapted from neovim runtime/syntax
 syn keyword natureTodo contained TODO FIXME XXX NOTE
 syn region  natureComment start="/\*" end="\*/" contains=natureTodo,@Spell
 syn match   natureComment "//.*$" contains=natureTodo,@Spell
-syn match   SpecialComment "^\#.*$"
-syn match   Conditional '\v[@]\ze\w'
+syn match   PreProc "\#.*$"
 
 let b:current_syntax = "nature"

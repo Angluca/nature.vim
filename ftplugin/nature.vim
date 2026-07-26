@@ -9,23 +9,23 @@ set cpo&vim
 compiler nature
 
 " Formatting
-setlocal formatoptions+=croql/ formatoptions-=t
+setl formatoptions+=croql/ formatoptions-=t
 
 " Miscellaneous settings
-setlocal comments=://
-setlocal commentstring=//\ %s
-setlocal iskeyword+=@-@
-setlocal suffixesadd=.n
+setl comments=://
+setl commentstring=//\ %s
+setl iskeyword+=@-@
+setl suffixesadd=.n
 
 let b:undo_ftplugin = 'setl cms< com< fo< isk< sua<'
 
 " Follow the nature style guide by default.
 if get(g:, 'nature_recommended_style', 1)
-  setlocal expandtab
-  setlocal shiftwidth=4
-  setlocal softtabstop=4
-  setlocal tabstop=4
-  setlocal textwidth=80
+  setl expandtab
+  setl shiftwidth=4
+  setl softtabstop=4
+  setl tabstop=4
+  setl textwidth=80
   let b:undo_ftplugin .= ' et< sts< sw< ts< tw<'
 endif
 
@@ -45,8 +45,8 @@ augroup nature.vim
   autocmd!
   " Highlight incorrect spacing by default.
   if get(g:, 'nature_space_error', 1)
-    autocmd InsertEnter * hi link natureSpaceError NONE
-    autocmd InsertLeave * hi link natureSpaceError Error
+    au InsertEnter * hi link natureSpaceError NONE
+    au InsertLeave * hi link natureSpaceError Error
   endif
 augroup END
 

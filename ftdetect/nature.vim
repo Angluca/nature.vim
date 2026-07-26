@@ -1,1 +1,3 @@
-au BufNewFile,BufRead *.n set filetype=nature
+au BufNewFile,BufRead *.n setf nature
+au BufNewFile,BufRead *.testar setf nature
+
